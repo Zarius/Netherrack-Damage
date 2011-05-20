@@ -14,8 +14,8 @@ import org.bukkit.plugin.PluginManager;
  * @author Dinnerbone
  */
 public class NetherrackDamage extends JavaPlugin {
-    private final NetherrackDamagePlayerListener playerListener = new NetherrackDamagePlayerListener(this);
-    private final NetherrackDamageBlockListener blockListener = new NetherrackDamageBlockListener(this);
+    private final NDprops props = new NDprops(this);
+    private final NetherrackDamagePlayerListener playerListener = new NetherrackDamagePlayerListener(this, props);
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
 
     // NOTE: There should be no need to define a constructor any more for more info on moving from
@@ -23,24 +23,19 @@ public class NetherrackDamage extends JavaPlugin {
     // http://forums.bukkit.org/threads/too-long-constructor.5032/
 
     public void onDisable() {
-        // TODO: Place any custom disable code here
-
         // NOTE: All registered events are automatically unregistered when a plugin is disabled
 
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
-        System.out.println("Disabled!");
+        System.out.println("[Netherrack-Damage] has been safely disabled.");
     }
 
     public void onEnable() {
-        // TODO: Place any custom enable code here including the registration of any events
-
         // Register our events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_PHYSICS, blockListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_CANBUILD, blockListener, Priority.Normal, this);
+        props.doConfig();
 
         // Register our commands
        // getCommand("pos").setExecutor(new SamplePosCommand(this));
@@ -48,6 +43,7 @@ public class NetherrackDamage extends JavaPlugin {
 
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
         PluginDescriptionFile pdfFile = this.getDescription();
+        //NDprops.class.;
         System.out.println( "[Netherrack-Damage] version v0.1 is enabled." );
     }
 

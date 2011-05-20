@@ -7,8 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.*;
 import java.lang.String;
+import java.util.*;
 
 /**
  * Handle events for all Player related events
@@ -16,21 +16,27 @@ import java.lang.String;
  */
 public class NetherrackDamagePlayerListener extends PlayerListener {
     private final NetherrackDamage plugin;
+    private NDprops props;
 
-    public NetherrackDamagePlayerListener(NetherrackDamage instance) {
+    public NetherrackDamagePlayerListener(NetherrackDamage instance, NDprops props) {
         plugin = instance;
+        this.props = props;
     }
   
     int id = 0;
     int IsFirst = 0;
     int IsDmg = 0;
-    String pla = "0";
+    int dmgDelay;
+    int dmgDealt;
+    String newdmg;
     @Override
     public void onPlayerMove(final PlayerMoveEvent event) {
-        final Location target = event.getTo();
-        final World world = target.getWorld();
-        pla = event.getPlayer().getName();
+        Location target = event.getTo();
+        World world = target.getWorld();
         final Block block = world.getBlockAt(new Location(world, target.getX(), target.getY() - 1, target.getZ()));
+        dmgDealt = props.damageDealt * 2;
+        dmgDelay = props.damageDelay * 20;
+        newdmg = String.valueOf(dmgDelay);
         if (block.getType() == Material.NETHERRACK) {
             if (IsFirst == 0) {
                  IsDmg = 1;
@@ -38,9 +44,10 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
                  id = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
                      public void run() {
                         System.out.println("The Netherrack is hurting!");
-                        event.getPlayer().damage(1);
+                        // TODO: Check if player is wearing boots. If so, reduce damage dealt.
+                        event.getPlayer().damage(dmgDealt);
                      }
-                 }, 0L, 200L);
+                 }, 0L, dmgDelay);
             }
         } else {
             if (IsDmg == 1) {

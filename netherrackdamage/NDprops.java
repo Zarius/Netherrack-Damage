@@ -1,51 +1,44 @@
 package netherrackdamage;
-
+ 
 import java.io.*;
 import java.util.*;
 import java.util.logging.*;
-
+import org.bukkit.util.config.Configuration;
+import org.bukkit.util.config.ConfigurationNode;
+ 
 public class NDprops {
     HashMap<String,ArrayList<String>> Properties = new HashMap<String,ArrayList<String>>(); 
     String fileName;
-	Logger log = Logger.getLogger("Minecraft");
-	File file;
-        
-        private final NetherrackDamage plugin;
-
-      //  public NDprops(NetherrackDamage instance) {
-       //     plugin = instance;
-       // }
-
-	/**
+    Logger log = Logger.getLogger("Minecraft");
+    Configuration file;
+    private final NetherrackDamage plugin;
+    int damageDealt;
+    int damageDelay;
+ 
+    /**
      * Creates or opens a properties file using specified filename
      * 
      * @param fileName
      */
-    public NDprops(String fileName, NetherrackDamage instance) {
+    public NDprops(NetherrackDamage instance) {
         plugin = instance;
-        this.fileName = fileName;
-        file = new File(fileName);
-
-        if (file.exists()) {
-            try {
-                NDprops.load();
-            } catch (IOException ex) {
-                log.severe("[PropertiesFile] Unable to load " + fileName + "!");
-            }
-        } else {
-            try {
-            	file.createNewFile();
-            	Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF8"));
-            	Date timestamp = new Date();
-                writer.write("#Properties file was generated on " + timestamp.toString());
-                writer.write("damageDealt: 1");
-                writer.write("#Delay in seconds");
-                writer.write("damageDelay: 1");
-                writer.close();
-            } catch (IOException ex) {
-                log.severe("[Netherrack-Damage] Unable to create " + fileName + "!");
-            }
-        }
+        
     }
-    
+    public void doConfig() {
+        file = new Configuration(new File(plugin.getDataFolder(), "properties.yml"));
+        file.load();
+        String md = file.getString("md");
+        if (new File(plugin.getDataFolder(),"properties.yml").exists()) {
+            System.out.println("[Netherrack-Damage] Configuration file loaded!");
+        } else {
+            file.setProperty("damageDealt", 1);
+            file.setProperty("damageDelay", 1);
+            file.save();
+            System.out.println("[Netherrack-Damage] Configuration file created with default values!");
+        }
+        
+        //Get configs
+        damageDealt = file.getInt("damageDealt", damageDealt);
+        damageDelay = file.getInt("damageDelay", damageDelay);
+    }
 }
