@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.*;
 import java.lang.String;
 import java.util.*;
 
@@ -28,7 +29,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     int IsDmg = 0;
     int dmgDelay;
     int dmgDealt;
-    String newdmg;
+    ItemStack air;
     @Override
     public void onPlayerMove(final PlayerMoveEvent event) {
         Location target = event.getTo();
@@ -36,25 +37,29 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
         final Block block = world.getBlockAt(new Location(world, target.getX(), target.getY() - 1, target.getZ()));
         dmgDealt = props.damageDealt * 2;
         dmgDelay = props.damageDelay * 20;
-        newdmg = String.valueOf(dmgDelay);
+        air = new ItemStack(Material.AIR);
         if (block.getType() == Material.NETHERRACK) {
             if (IsFirst == 0) {
-                 IsDmg = 1;
-                 IsFirst = 1;
-                 id = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
-                     public void run() {
-                        System.out.println("The Netherrack is hurting!");
-                        // TODO: Check if player is wearing boots. If so, reduce damage dealt.
-                        event.getPlayer().damage(dmgDealt);
-                     }
-                 }, 0L, dmgDelay);
+                 if (!event.getPlayer().getInventory().getBoots().equals(air)) {
+                     dmgDealt = dmgDealt / 2;
+                 }
+                 if (props.perm.equals("Yes")) {
+                 if (!(plugin).permissionHandler.has(event.getPlayer(), "nd.protection")) {
+                     IsDmg = 1;
+                     IsFirst = 1;
+                     id = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+                          public void run() {
+                             event.getPlayer().damage(dmgDealt);
+                          }
+                     }, 0L, dmgDelay);
+                 }
+                 }
             }
         } else {
             if (IsDmg == 1) {
                 Bukkit.getServer().getScheduler().cancelTask(id);
                 IsDmg = 0;
                 IsFirst = 0;
-                System.out.println("The Netherrack has stopped hurting!");
             }
         }
     }

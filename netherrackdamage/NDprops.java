@@ -14,6 +14,7 @@ public class NDprops {
     private final NetherrackDamage plugin;
     int damageDealt;
     int damageDelay;
+    String perm;
  
     /**
      * Creates or opens a properties file using specified filename
@@ -24,15 +25,15 @@ public class NDprops {
         plugin = instance;
         
     }
-    public void doConfig() {
+    public void doConfig(String permiss) {
         file = new Configuration(new File(plugin.getDataFolder(), "properties.yml"));
         file.load();
-        String md = file.getString("md");
         if (new File(plugin.getDataFolder(),"properties.yml").exists()) {
             System.out.println("[Netherrack-Damage] Configuration file loaded!");
         } else {
             file.setProperty("damageDealt", 1);
             file.setProperty("damageDelay", 1);
+            file.setProperty("Permissions", permiss);
             file.save();
             System.out.println("[Netherrack-Damage] Configuration file created with default values!");
         }
@@ -40,5 +41,6 @@ public class NDprops {
         //Get configs
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);
+        perm = file.getString("Permissions", perm);
     }
 }
