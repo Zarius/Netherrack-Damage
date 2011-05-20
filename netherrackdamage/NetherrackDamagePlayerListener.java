@@ -8,8 +8,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.*;
-import java.lang.String;
-import java.util.*;
 
 /**
  * Handle events for all Player related events
@@ -41,6 +39,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
         if (block.getType() == Material.NETHERRACK) {
             if (IsFirst == 0) {
                  if (!event.getPlayer().getInventory().getBoots().equals(air)) {
+                     // TODO: add configuration option to enable/disable boots halving damage.
                      dmgDealt = dmgDealt / 2;
                  }
                  if (props.perm.equals("Yes")) {

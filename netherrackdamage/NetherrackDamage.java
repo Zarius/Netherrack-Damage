@@ -27,6 +27,7 @@ public class NetherrackDamage extends JavaPlugin {
               System.out.println("[Netherrack-Damage] hooked into Permissions.");
               permiss = "Yes";
           } else {
+              // TODO: read ops.txt file if Permissions isn't found.
               System.out.println("[Netherrack-Damage] Permissions not found!");
               permiss = "No";
           }
@@ -34,19 +35,16 @@ public class NetherrackDamage extends JavaPlugin {
     }
 
     public void onDisable() {
-        // NOTE: All registered events are automatically unregistered when a plugin is disabled
-
-        // EXAMPLE: Custom code, here we just output some info so we can check all is well
         System.out.println("[Netherrack-Damage] has been safely disabled.");
     }
 
     public void onEnable() {
-        // Register our events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
         setupPermissions();
         props.doConfig(permiss);
-        System.out.println( "[Netherrack-Damage] version v0.1 is enabled." );
+        PluginDescriptionFile pdfFile = this.getDescription();
+        System.out.println( "[Netherrack-Damage] version v" + pdfFile.getVersion() + " is enabled." );
     }
 
     public boolean isDebugging(final Player player) {

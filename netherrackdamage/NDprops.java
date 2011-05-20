@@ -2,14 +2,11 @@ package netherrackdamage;
  
 import java.io.*;
 import java.util.*;
-import java.util.logging.*;
 import org.bukkit.util.config.Configuration;
-import org.bukkit.util.config.ConfigurationNode;
  
 public class NDprops {
     HashMap<String,ArrayList<String>> Properties = new HashMap<String,ArrayList<String>>(); 
     String fileName;
-    Logger log = Logger.getLogger("Minecraft");
     Configuration file;
     private final NetherrackDamage plugin;
     int damageDealt;
