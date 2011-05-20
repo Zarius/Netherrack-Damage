@@ -12,12 +12,8 @@ public class NDprops {
     int damageDealt;
     int damageDelay;
     String perm;
- 
-    /**
-     * Creates or opens a properties file using specified filename
-     * 
-     * @param fileName
-     */
+    String bootMod;
+
     public NDprops(NetherrackDamage instance) {
         plugin = instance;
         
@@ -30,6 +26,7 @@ public class NDprops {
         } else {
             file.setProperty("damageDealt", 1);
             file.setProperty("damageDelay", 1);
+            file.setProperty("bootMod", "Yes");
             file.setProperty("Permissions", permiss);
             file.save();
             System.out.println("[Netherrack-Damage] Configuration file created with default values!");
@@ -39,5 +36,6 @@ public class NDprops {
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);
         perm = file.getString("Permissions", perm);
+        bootMod = file.getString("bootMod", bootMod);
     }
 }

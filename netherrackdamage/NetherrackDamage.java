@@ -28,7 +28,7 @@ public class NetherrackDamage extends JavaPlugin {
               permiss = "Yes";
           } else {
               // TODO: read ops.txt file if Permissions isn't found.
-              System.out.println("[Netherrack-Damage] Permissions not found!");
+              System.out.println("[Netherrack-Damage] Permissions not found! Using ops.txt file.");
               permiss = "No";
           }
       }
