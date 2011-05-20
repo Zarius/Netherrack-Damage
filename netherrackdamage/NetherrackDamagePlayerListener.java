@@ -8,15 +8,18 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.*;
-import java.io.*;
+import org.bukkit.plugin.*;
 
 public class NetherrackDamagePlayerListener extends PlayerListener {
     private final NetherrackDamage plugin;
     private NDprops props;
+    private NDcommands commands;
+    Plugin permissionsPlugin;
 
-    public NetherrackDamagePlayerListener(NetherrackDamage instance, NDprops props) {
+    public NetherrackDamagePlayerListener(NetherrackDamage instance, NDprops props, NDcommands commands) {
         plugin = instance;
         this.props = props;
+        this.commands = commands;
     }
   
     int id = 0;
@@ -29,6 +32,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     public void onPlayerMove(final PlayerMoveEvent event) {
         Location target = event.getTo();
         World world = target.getWorld();
+        permissionsPlugin = plugin.getServer().getPluginManager().getPlugin("Permissions");
         final Block block = world.getBlockAt(new Location(world, target.getX(), target.getY() - 1, target.getZ()));
         final Block blockxs = world.getBlockAt(new Location(world, target.getX() - 0.4, target.getY(), target.getZ()));
         final Block blockxp = world.getBlockAt(new Location(world, target.getX() + 0.4, target.getY(), target.getZ()));
@@ -42,7 +46,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
                  if (!event.getPlayer().getInventory().getBoots().equals(air) && props.bootMod.equals("Yes")) {
                      dmgDealt = dmgDealt / 2;
                  }
-                 if (props.perm.equals("Yes")) {
+                 if (permissionsPlugin != null) {
                  if (!(plugin).permissionHandler.has(event.getPlayer(), "nd.protection")) {
                      IsDmg = 1;
                      IsFirst = 1;
@@ -53,16 +57,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
                      }, 0L, dmgDelay);
                  }
                  } else {
-                     try{
-    FileInputStream fstream = new FileInputStream("ops.txt");
-    // Get the object of DataInputStream
-    DataInputStream in = new DataInputStream(fstream);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-    String strLine;
-    //Read File Line By Line
-    while ((strLine = br.readLine()) != null)   {
-      // Print the content on the console
-      if (!event.getPlayer().getName().equalsIgnoreCase(strLine)) {
+                     if (!event.getPlayer().isOp()) {
                     IsDmg = 1;
                      IsFirst = 1;
                      id = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
@@ -71,12 +66,6 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
                           }
                      }, 0L, dmgDelay);
       }
-    }
-    //Close the input stream
-    in.close();
-    }catch (Exception e){//Catch exception if any
-      System.err.println("Error: " + e.getMessage());
-    }
                  }
             }
         } else {

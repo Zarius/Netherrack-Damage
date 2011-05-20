@@ -18,20 +18,31 @@ public class NDprops {
         plugin = instance;
         
     }
-    public void doConfig(String permiss) {
+    public void doConfig() {
         file = new Configuration(new File(plugin.getDataFolder(), "properties.yml"));
         file.load();
         if (new File(plugin.getDataFolder(),"properties.yml").exists()) {
             System.out.println("[Netherrack-Damage] Configuration file loaded!");
         } else {
-            file.setProperty("damageDealt", 1);
-            file.setProperty("damageDelay", 1);
+            file.setProperty("damageDealt", "1");
+            file.setProperty("damageDelay", "1");
             file.setProperty("bootMod", "Yes");
-            file.setProperty("Permissions", permiss);
             file.save();
             System.out.println("[Netherrack-Damage] Configuration file created with default values!");
         }
         
+        //Get configs
+        damageDealt = file.getInt("damageDealt", damageDealt);
+        damageDelay = file.getInt("damageDelay", damageDelay);
+        perm = file.getString("Permissions", perm);
+        bootMod = file.getString("bootMod", bootMod);
+    }
+    public void relConfig() {
+        file = new Configuration(new File(plugin.getDataFolder(), "properties.yml"));
+        file.load();
+        if (new File(plugin.getDataFolder(),"properties.yml").exists()) {
+            System.out.println("[Netherrack-Damage] Configuration file reloaded!");
+        }
         //Get configs
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);

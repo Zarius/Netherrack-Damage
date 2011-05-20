@@ -2,8 +2,8 @@ package netherrackdamage;
 
 import java.util.HashMap;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
+import org.bukkit.event.Event.*;
+import org.bukkit.event.*;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
@@ -12,11 +12,14 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import org.bukkit.plugin.Plugin;
 
 public class NetherrackDamage extends JavaPlugin {
+    
     private final NDprops props = new NDprops(this);
-    private final NetherrackDamagePlayerListener playerListener = new NetherrackDamagePlayerListener(this, props);
+    private final NDcommands cmdHandle = new NDcommands(this, props);
+    private final NDsetupcmds cmds = new NDsetupcmds(this, cmdHandle, props);
+    private final NetherrackDamagePlayerListener playerListener = new NetherrackDamagePlayerListener(this, props, cmdHandle);
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     public static PermissionHandler permissionHandler;
-    String permiss;
+    Player player;
     
     private void setupPermissions() {
       Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
@@ -25,11 +28,8 @@ public class NetherrackDamage extends JavaPlugin {
           if (permissionsPlugin != null) {
               this.permissionHandler = ((Permissions) permissionsPlugin).getHandler();
               System.out.println("[Netherrack-Damage] hooked into Permissions.");
-              permiss = "Yes";
           } else {
-              // TODO: read ops.txt file if Permissions isn't found.
               System.out.println("[Netherrack-Damage] Permissions not found! Using ops.txt file.");
-              permiss = "No";
           }
       }
     }
@@ -41,12 +41,16 @@ public class NetherrackDamage extends JavaPlugin {
     public void onEnable() {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_CHAT, playerListener, Priority.Normal, this);
         setupPermissions();
-        props.doConfig(permiss);
+        cmds.setupCommands();
+        props.doConfig();
         PluginDescriptionFile pdfFile = this.getDescription();
         System.out.println( "[Netherrack-Damage] version v" + pdfFile.getVersion() + " is enabled." );
     }
 
+    
+    
     public boolean isDebugging(final Player player) {
         if (debugees.containsKey(player)) {
             return debugees.get(player);
