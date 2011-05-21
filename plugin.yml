@@ -1,6 +1,6 @@
 name: NetherrackDamage
 main: netherrackdamage.NetherrackDamage
-version: 0.5_01
+version: 0.6
 author: ChrizC
 description: NetherrackDamage damages the player when he/she comes into contact with Netherrack.
 commands:

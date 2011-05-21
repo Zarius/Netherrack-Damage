@@ -15,6 +15,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     private NDprops props;
     private NDcommands commands;
     Plugin permissionsPlugin;
+    String[] protectedWorlds;
 
     public NetherrackDamagePlayerListener(NetherrackDamage instance, NDprops props, NDcommands commands) {
         plugin = instance;
@@ -25,6 +26,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     int id = 0;
     int IsFirst = 0;
     int IsDmg = 0;
+    int isPrt = 0;
     int dmgDelay;
     int dmgDealt;
     ItemStack air;
@@ -32,6 +34,15 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     public void onPlayerMove(final PlayerMoveEvent event) {
         Location target = event.getTo();
         World world = target.getWorld();
+            int i = 0;
+            protectedWorlds = props.temp.split(",");
+        for (int x = protectedWorlds.length; x>0; x--) {
+            if (world.getName().equals(protectedWorlds[i])) {
+                isPrt = 1;
+            }
+            i++;
+        }
+        if (isPrt == 0) {
         permissionsPlugin = plugin.getServer().getPluginManager().getPlugin("Permissions");
         final Block block = world.getBlockAt(new Location(world, target.getX(), target.getY() - 1, target.getZ()));
         final Block blockxs = world.getBlockAt(new Location(world, target.getX() - 0.4, target.getY(), target.getZ()));
@@ -77,5 +88,6 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
             }
         }
     }
+}
 }
     

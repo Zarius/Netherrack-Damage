@@ -11,8 +11,8 @@ public class NDprops {
     private final NetherrackDamage plugin;
     int damageDealt;
     int damageDelay;
-    String perm;
     String bootMod;
+    String temp;
 
     public NDprops(NetherrackDamage instance) {
         plugin = instance;
@@ -26,6 +26,7 @@ public class NDprops {
         } else {
             file.setProperty("damageDealt", 1);
             file.setProperty("damageDelay", 1);
+            file.setProperty("protectedWorlds", "");
             file.setProperty("bootMod", "Yes");
             file.save();
             System.out.println("[Netherrack-Damage] Configuration file created with default values!");
@@ -34,8 +35,9 @@ public class NDprops {
         //Get configs
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);
-        perm = file.getString("Permissions", perm);
         bootMod = file.getString("bootMod", bootMod);
+        temp = file.getString("protectedWorlds", temp);
+        
     }
     public void relConfig() {
         file = new Configuration(new File(plugin.getDataFolder(), "properties.yml"));
@@ -46,7 +48,6 @@ public class NDprops {
         //Get configs
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);
-        perm = file.getString("Permissions", perm);
         bootMod = file.getString("bootMod", bootMod);
     }
 }
