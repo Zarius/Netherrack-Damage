@@ -10,6 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.Bukkit;
 
 public class NetherrackDamage extends JavaPlugin {
     
@@ -35,6 +36,8 @@ public class NetherrackDamage extends JavaPlugin {
     }
 
     public void onDisable() {
+        Bukkit.getServer().getScheduler().cancelTask(playerListener.id);
+        Bukkit.getServer().getScheduler().cancelAllTasks();
         System.out.println("[Netherrack-Damage] has been safely disabled.");
     }
 

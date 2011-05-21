@@ -60,8 +60,8 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
                      if (!event.getPlayer().isOp()) {
                     IsDmg = 1;
                      IsFirst = 1;
-                     id = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
-                          public void run() {
+                    id = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+                         public void run() {
                              event.getPlayer().damage(dmgDealt);
                           }
                      }, 0L, dmgDelay);
@@ -71,6 +71,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
         } else {
             if (IsDmg == 1) {
                 Bukkit.getServer().getScheduler().cancelTask(id);
+                Bukkit.getServer().getScheduler().cancelAllTasks();
                 IsDmg = 0;
                 IsFirst = 0;
             }

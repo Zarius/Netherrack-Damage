@@ -24,8 +24,8 @@ public class NDprops {
         if (new File(plugin.getDataFolder(),"properties.yml").exists()) {
             System.out.println("[Netherrack-Damage] Configuration file loaded!");
         } else {
-            file.setProperty("damageDealt", "1");
-            file.setProperty("damageDelay", "1");
+            file.setProperty("damageDealt", 1);
+            file.setProperty("damageDelay", 1);
             file.setProperty("bootMod", "Yes");
             file.save();
             System.out.println("[Netherrack-Damage] Configuration file created with default values!");
