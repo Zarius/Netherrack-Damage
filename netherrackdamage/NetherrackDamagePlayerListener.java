@@ -52,7 +52,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
         dmgDealt = props.damageDealt * 2;
         dmgDelay = props.damageDelay * 20;
         air = new ItemStack(Material.AIR);
-        if (block.getType() == Material.NETHERRACK || blockxs.getType() == Material.NETHERRACK || blockxp.getType() == Material.NETHERRACK || blockzs.getType() == Material.NETHERRACK || blockzp.getType() == Material.NETHERRACK) {
+        if (block.getTypeId() == props.blockID || blockxs.getTypeId() == props.blockID || blockxp.getTypeId() == props.blockID || blockzs.getTypeId() == props.blockID || blockzp.getTypeId() == props.blockID) {
             if (IsFirst == 0) {
                  if (!event.getPlayer().getInventory().getBoots().equals(air) && props.bootMod.equals("Yes")) {
                      dmgDealt = dmgDealt / 2;

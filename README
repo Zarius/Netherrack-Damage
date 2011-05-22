@@ -4,4 +4,4 @@ Coded and maintained by ChrizC
 
 **Netherrack-Damage**
 
-This plugin damages the player when the player is on Netherrack.
+This plugin damages the player when the player is on or next to a user-defined block (default Netherrack).
