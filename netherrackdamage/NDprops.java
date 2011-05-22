@@ -11,7 +11,7 @@ public class NDprops {
     private final NetherrackDamage plugin;
     int damageDealt;
     int damageDelay;
-    int blockID;
+    String blockID;
     String bootMod;
     String temp;
 
@@ -27,8 +27,8 @@ public class NDprops {
         } else {
             file.setProperty("damageDealt", 1);
             file.setProperty("damageDelay", 1);
-            file.setProperty("protectedWorlds", "none");
-            file.setProperty("blockID", 87);
+            file.setProperty("protectedWorlds", "No");
+            file.setProperty("blockID", "87");
             file.setProperty("bootMod", "Yes");
             file.save();
             System.out.println("[Netherrack-Damage] Configuration file created with default values!");
@@ -38,7 +38,7 @@ public class NDprops {
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);
         bootMod = file.getString("bootMod", bootMod);
-        blockID = file.getInt("blockID", blockID);
+        blockID = file.getString("blockID", blockID);
         temp = file.getString("protectedWorlds", temp);
         
     }
@@ -52,7 +52,7 @@ public class NDprops {
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);
         bootMod = file.getString("bootMod", bootMod);
-        blockID = file.getInt("blockID", blockID);
+        blockID = file.getString("blockID", blockID);
         temp = file.getString("protectedWorlds", temp);
     }
 }

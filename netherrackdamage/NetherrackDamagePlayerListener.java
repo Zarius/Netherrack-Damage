@@ -16,6 +16,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     private NDcommands commands;
     Plugin permissionsPlugin;
     String[] protectedWorlds;
+    String[] blockIDs;
 
     public NetherrackDamagePlayerListener(NetherrackDamage instance, NDprops props, NDcommands commands) {
         plugin = instance;
@@ -27,6 +28,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     int IsFirst = 0;
     int IsDmg = 0;
     int isPrt = 0;
+    int isBlock = 0;
     int dmgDelay;
     int dmgDealt;
     ItemStack air;
@@ -52,7 +54,18 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
         dmgDealt = props.damageDealt * 2;
         dmgDelay = props.damageDelay * 20;
         air = new ItemStack(Material.AIR);
-        if (block.getTypeId() == props.blockID || blockxs.getTypeId() == props.blockID || blockxp.getTypeId() == props.blockID || blockzs.getTypeId() == props.blockID || blockzp.getTypeId() == props.blockID) {
+        int y = 0;
+            blockIDs = props.blockID.split(",");
+        for (int x = blockIDs.length; x>0; x--) {
+            int ids = Integer.parseInt(blockIDs[y]);
+            if (block.getTypeId() == ids || blockxs.getTypeId() == ids || blockxp.getTypeId() == ids || blockzs.getTypeId() == ids || blockzp.getTypeId() == ids) {
+                isBlock = 1;
+            } else {
+                isBlock = 0;
+            }
+            y++;
+        }
+        if (isBlock == 1) {
             if (IsFirst == 0) {
                  if (!event.getPlayer().getInventory().getBoots().equals(air) && props.bootMod.equals("Yes")) {
                      dmgDealt = dmgDealt / 2;
@@ -62,7 +75,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
                      IsDmg = 1;
                      IsFirst = 1;
                      id = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
-                          public void run() {
+                         public void run() {
                              event.getPlayer().damage(dmgDealt);
                           }
                      }, 0L, dmgDelay);
