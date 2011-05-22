@@ -17,6 +17,8 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     Plugin permissionsPlugin;
     String[] protectedWorlds;
     String[] blockIDs;
+    String[] wool;
+    int data;
 
     public NetherrackDamagePlayerListener(NetherrackDamage instance, NDprops props, NDcommands commands) {
         plugin = instance;
@@ -31,6 +33,7 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
     int isBlock = 0;
     int dmgDelay;
     int dmgDealt;
+    int ids;
     ItemStack air;
     @Override
     public void onPlayerMove(final PlayerMoveEvent event) {
@@ -57,9 +60,21 @@ public class NetherrackDamagePlayerListener extends PlayerListener {
         int y = 0;
             blockIDs = props.blockID.split(",");
         for (int x = blockIDs.length; x>0; x--) {
-            int ids = Integer.parseInt(blockIDs[y]);
+            if (blockIDs[y].contains(":")) {
+                wool = blockIDs[y].split("[:]");
+                data = Integer.parseInt(wool[1]);
+                ids = Integer.parseInt(wool[0]);
+            } else {
+                ids = Integer.parseInt(blockIDs[y]);
+            }
             if (block.getTypeId() == ids || blockxs.getTypeId() == ids || blockxp.getTypeId() == ids || blockzs.getTypeId() == ids || blockzp.getTypeId() == ids) {
-                isBlock = 1;
+                if (ids == 6 || ids == 17 || ids == 35 || ids == 44) {
+                    if (block.getData() == data || blockxs.getData() == data || blockxp.getData() == data || blockzs.getData() == data || blockzp.getData() == data) {
+                        isBlock = 1;
+                    }
+                } else {
+                    isBlock = 1;
+                }
             } else {
                 isBlock = 0;
             }
