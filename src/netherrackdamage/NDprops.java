@@ -14,6 +14,10 @@ public class NDprops {
     String blockID;
     String bootMod;
     String temp;
+    String armorMod;
+    String painMessages;
+    String painMessage;
+    String debugMessages;
 
     public NDprops(NetherrackDamage instance) {
         plugin = instance;
@@ -30,6 +34,10 @@ public class NDprops {
             file.setProperty("protectedWorlds", "No");
             file.setProperty("blockID", "87");
             file.setProperty("bootMod", "Yes");
+            file.setProperty("armorMod", "Yes");
+            file.setProperty("painMessages", "No");
+            file.setProperty("painMessage", "*Ouch* Radiation damage from Netherrack.");
+            file.setProperty("debugMessages", "No");
             file.save();
             System.out.println("[Netherrack-Damage] Configuration file created with default values!");
         }
@@ -39,7 +47,11 @@ public class NDprops {
         damageDelay = file.getInt("damageDelay", damageDelay);
         bootMod = file.getString("bootMod", bootMod);
         blockID = file.getString("blockID", blockID);
+        armorMod = file.getString("armorMod", armorMod);
+        painMessages = file.getString("painMessages", painMessages);
+        painMessage = file.getString("painMessage", painMessage);
         temp = file.getString("protectedWorlds", temp);
+        debugMessages = file.getString("debugMessages", debugMessages);
         
     }
     public void relConfig() {
@@ -52,7 +64,11 @@ public class NDprops {
         damageDealt = file.getInt("damageDealt", damageDealt);
         damageDelay = file.getInt("damageDelay", damageDelay);
         bootMod = file.getString("bootMod", bootMod);
+        armorMod = file.getString("armorMod", armorMod);
+        painMessages = file.getString("painMessages", painMessages);
+        painMessage = file.getString("painMessage", painMessage);
         blockID = file.getString("blockID", blockID);
         temp = file.getString("protectedWorlds", temp);
+        debugMessages = file.getString("debugMessages", debugMessages);
     }
 }
